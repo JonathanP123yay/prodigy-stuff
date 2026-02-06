@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Updating bookmarklet</title>
+  </head>
+  <body>
+    <h1>Updating bookmarklet...</h1>
+    <p>Drag the link below to your bookmarks bar to update your bookmarklet:</p>
+    <a id="bookmarklet-link" href="#">Loading...</a>
+
+    <script>
+      const scriptUrl = './main.js';
+
+      fetch(scriptUrl)
+        .then(response => response.text())
+        .then(code => {
+          const oneLine = code.replace(/\s+/g, ' ');
+          const bookmarklet = 'javascript:(function(){' + oneLine + '})()';
+
+          // Update the link
+          const link = document.getElementById('bookmarklet-link');
+          link.href = bookmarklet;
+          link.innerText = 'Update Bookmarklet';
+        })
+        .catch(err => {
+          document.body.innerHTML += `<p style="color:red;">Failed to load main.js: ${err}</p>`;
+        });
+    </script>
+  </body>
+</html>
