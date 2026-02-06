@@ -5,22 +5,14 @@
 </head>
 <body>
   <h1>Updating bookmarklet...</h1>
-  <p>Loading latest bookmarklet...</p>
+  <p>Running the latest bookmarklet...</p>
   <script>
-    // Fetch main.js from the same folder
     fetch('./main.js')
       .then(res => res.text())
       .then(code => {
-        // Remove any previous injected bookmarklet code
-        window._currentBookmarklet && (window._currentBookmarklet = null);
-
-        // Execute the code safely
-        try {
-          new Function(code)(); // runs the fetched JS
-          window._currentBookmarklet = code; // store reference in case needed
-        } catch(err) {
-          document.body.innerHTML += `<p style="color:red;">Failed to execute main.js: ${err}</p>`;
-        }
+        // main.js is already a bookmarklet starting with "javascript:"
+        // just redirect the browser to it to run
+        window.location.href = code.trim();
       })
       .catch(err => {
         document.body.innerHTML += `<p style="color:red;">Failed to load main.js: ${err}</p>`;
