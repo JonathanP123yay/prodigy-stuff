@@ -1,29 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Updating bookmarklet...</title>
+  <title>Install Bookmarklet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+    a.bookmarklet {
+      display: inline-block;
+      padding: 14px 20px;
+      background: #4f46e5;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      margin-top: 20px;
+      font-size: 12px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Updating bookmarklet...</h1>
-  <loading></loading>
-  <p>Tap and hold the button below to add/update your bookmarklet:</p>
-  <button id="bookmarkletBtn" style="font-size: 1.2rem; padding: 10px;">Add Bookmarklet</button>
 
-  <script>
-    fetch('./main.js')
-      .then(res => res.text())
-      .then(code => {
-        const btn = document.getElementById('bookmarkletBtn');
-        btn.onclick = () => {
-          // Copy the full bookmarklet code to clipboard
-          navigator.clipboard.writeText(code.trim()).then(() => {
-            alert('Bookmarklet code copied! Now create a new bookmark and paste it in the URL.');
-          });
-        };
-      })
-      .catch(err => {
-        document.body.innerHTML += `<p style="color:red;">Failed to load main.js: ${err}</p>`;
-      });
-  </script>
+<h1>Install Bookmarklet</h1>
+<loading>100%</loading>
+<p><b>Desktop:</b> Drag the button to your bookmarks bar</p>
+<p><b>iPad / Mobile:</b> Favorite this page → Edit bookmark → Paste code below</p>
+
+<a id="dragLink" class="bookmarklet" href="#">Loading...</a>
+
+<textarea id="codeBox" readonly></textarea>
+
+<script>
+fetch('./main.js')
+  .then(res => res.text())
+  .then(code => {
+    code = code.trim();
+
+    // Set drag button link
+    const drag = document.getElementById('dragLink');
+    drag.href = code;
+    drag.textContent = "Drag Me to Bookmarks";
+
+    // Put code in box for copy/paste users
+    document.getElementById('codeBox').value = code;
+  })
+  .catch(() => {
+    document.body.innerHTML += "<p style='color:red;'>Failed to load main.js</p>";
+  });
+</script>
+
 </body>
 </html>
