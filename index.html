@@ -32,7 +32,6 @@
 <h1>Install Bookmarklet</h1>
 <progress></progress>
 <p><b>Desktop:</b> Drag the button to your bookmarks bar</p>
-<p><b>Mobile:</b> Favorite this page → Edit bookmark → Paste code below</p>
 
 <a id="dragLink" class="bookmarklet">Loading...</a>
 
@@ -51,9 +50,9 @@ fetch('./main.js')
     // Set drag button
     const drag = document.getElementById('dragLink');
     drag.href = bookmarklet;
-    drag.textContent = "Drag Me to Bookmarks";
+    drag.textContent = "Prodigy Hacks";
 
-    // Fill copy box
+    <p><b>Mobile:</b> Favorite this page → Edit bookmark → Paste code below</p>
     document.getElementById('codeBox').value = bookmarklet;
   })
   .catch(() => {
