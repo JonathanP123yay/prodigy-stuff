@@ -30,31 +30,26 @@
 <body>
 
 <h1>Install Bookmarklet</h1>
-<loading>100%</loading>
+<progress>100</progress>
 <p><b>Desktop:</b> Drag the button to your bookmarks bar</p>
 <p><b>iPad / Mobile:</b> Favorite this page → Edit bookmark → Paste code below</p>
 
-<a id="dragLink" class="bookmarklet" href="#">Loading...</a>
+<a id="dragLink" class="bookmarklet">Loading...</a>
 
 <textarea id="codeBox" readonly></textarea>
 
 <script>
-fetch('./main.js')
-  .then(res => res.text())
-  .then(code => {
-    code = code.trim();
+const MAIN_JS_URL = "https://jonathanp123yay.github.io/YOUR_REPO_NAME/main.js";
 
-    // Set drag button link
-    const drag = document.getElementById('dragLink');
-    drag.href = code;
-    drag.textContent = "Drag Me to Bookmarks";
+const loader = `javascript:(async()=>{
+  let r=await fetch('${MAIN_JS_URL}');
+  let t=await r.text();
+  new Function(t)();
+})()`;
 
-    // Put code in box for copy/paste users
-    document.getElementById('codeBox').value = code;
-  })
-  .catch(() => {
-    document.body.innerHTML += "<p style='color:red;'>Failed to load main.js</p>";
-  });
+document.getElementById("dragLink").href = loader;
+document.getElementById("dragLink").textContent = "Drag Me to Bookmarks";
+document.getElementById("codeBox").value = loader;
 </script>
 
 </body>
