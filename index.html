@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Updating bookmarklet</title>
-  </head>
-  <body>
-    <h1>Updating bookmarklet...</h1>
-    <p>Drag the link below to your bookmarks bar to update your bookmarklet:</p>
-    <a id="bookmarklet-link" href="#">Loading...</a>
+<head>
+  <title>Updating bookmarklet...</title>
+</head>
+<body>
+  <h1>Updating bookmarklet...</h1>
+  <p>Loading latest bookmarklet...</p>
+  <script>
+    // Fetch main.js from the same folder
+    fetch('./main.js')
+      .then(res => res.text())
+      .then(code => {
+        // Clean up line breaks and whitespace
+        const oneLine = code.replace(/\s+/g, ' ');
 
-    <script>
-      const scriptUrl = './main.js';
+        // Wrap as bookmarklet
+        const bookmarklet = 'javascript:(function(){' + oneLine + '})()';
 
-      fetch(scriptUrl)
-        .then(response => response.text())
-        .then(code => {
-          const oneLine = code.replace(/\s+/g, ' ');
-          const bookmarklet = 'javascript:(function(){' + oneLine + '})()';
+        // Remove any old script injected by previous bookmarklets
+        document.querySelectorAll('script[data-bookmarklet]').forEach(s => s.remove());
 
-          // Update the link
-          const link = document.getElementById('bookmarklet-link');
-          link.href = bookmarklet;
-          link.innerText = 'Update Bookmarklet';
-        })
-        .catch(err => {
-          document.body.innerHTML += `<p style="color:red;">Failed to load main.js: ${err}</p>`;
-        });
-    </script>
-  </body>
+        // Create a new script element to run main.js inline
+        const script = document.createElement('script');
+        script.dataset.bookmarklet = 'true'; // mark it so we can remove it next time
+        script.textContent = oneLine;
+        document.body.appendChild(script);
+
+        // Optional: also redirect the browser to the bookmarklet (executes again)
+        // window.location.href = bookmarklet;
+      })
+      .catch(err => {
+        document.body.innerHTML += `<p style="color:red;">Failed to load main.js: ${err}</p>`;
+      });
+  </script>
+</body>
 </html>
