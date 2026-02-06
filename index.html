@@ -6,14 +6,20 @@
 <body>
   <h1>Updating bookmarklet...</h1>
   <loading></loading>
-  <p>Running the latest bookmarklet...</p>
+  <p>Tap and hold the button below to add/update your bookmarklet:</p>
+  <button id="bookmarkletBtn" style="font-size: 1.2rem; padding: 10px;">Add Bookmarklet</button>
+
   <script>
     fetch('./main.js')
       .then(res => res.text())
       .then(code => {
-        // main.js is already a bookmarklet starting with "javascript:"
-        // just redirect the browser to it to run
-        window.location.href = code.trim();
+        const btn = document.getElementById('bookmarkletBtn');
+        btn.onclick = () => {
+          // Copy the full bookmarklet code to clipboard
+          navigator.clipboard.writeText(code.trim()).then(() => {
+            alert('Bookmarklet code copied! Now create a new bookmark and paste it in the URL.');
+          });
+        };
       })
       .catch(err => {
         document.body.innerHTML += `<p style="color:red;">Failed to load main.js: ${err}</p>`;
