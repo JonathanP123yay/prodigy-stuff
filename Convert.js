@@ -1,25 +1,50 @@
-document.addEventListener("DOMContentLoaded",()=>{
-  const btn=document.getElementById("convertBtn");
-  const output=document.getElementById("output");
+async function convertMain() {
+  try {
+    const res = await fetch("./main.js");
+    let code = await res.text();
 
-  btn.onclick=async()=>{
-    output.value="Loading main.js...";
-    try{
-      let res=await fetch("./main.js");
-      let code=await res.text();
+    // Remove comments
+    code = code.replace(/\/\*[\s\S]*?\*\//g, "");
+    code = code.replace(/\/\/.*$/gm, "");
 
-      // Remove comments
-      code=code.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm,"");
+    // Compress whitespace
+    code = code.replace(/\s+/g, " ").trim();
 
-      // Compress whitespace
-      code=code.replace(/\s+/g," ").trim();
+    // Wrap as bookmarklet
+    const bookmarklet = "javascript:(()=>{" + code + "})()";
 
-      // Convert to bookmarklet one-liner
-      let oneLine="javascript:(()=>{"+code+"})()";
+    // Output to page
+    const box = document.getElementById("output");
+    box.value = bookmarklet;
 
-      output.value=oneLine;
-    }catch{
-      output.value="Failed to load main.js";
-    }
-  };
-});
+    console.log("Bookmarklet generated!");
+  } catch (err) {
+    alert("Failed to load main.js");
+    console.error(err);
+  }
+}
+async function convertMain() {
+  try {
+    const res = await fetch("./main.js");
+    let code = await res.text();
+
+    // Remove comments
+    code = code.replace(/\/\*[\s\S]*?\*\//g, "");
+    code = code.replace(/\/\/.*$/gm, "");
+
+    // Compress whitespace
+    code = code.replace(/\s+/g, " ").trim();
+
+    // Wrap as bookmarklet
+    const bookmarklet = "javascript:(()=>{" + code + "})()";
+
+    // Output to page
+    const box = document.getElementById("output");
+    box.value = bookmarklet;
+
+    console.log("Bookmarklet generated!");
+  } catch (err) {
+    alert("Failed to load main.js");
+    console.error(err);
+  }
+}
