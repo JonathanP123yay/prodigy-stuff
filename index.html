@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Install Bookmarklet</title>
+  <title>Bookmarklet Converter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -9,56 +9,32 @@
       text-align: center;
       padding: 30px;
     }
-    a.bookmarklet {
-      display: inline-block;
-      padding: 14px 20px;
-      background: #4f46e5;
-      color: white;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 18px;
-      margin-top: 20px;
-    }
     textarea {
       width: 100%;
-      height: 120px;
-      margin-top: 20px;
+      height: 200px;
       font-size: 12px;
+      margin-top: 12px;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background: #4f46e5;
+      color: white;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<h1>Install Bookmarklet</h1>
-<progress></progress>
-<p><b>Desktop:</b> Drag the button to your bookmarks bar</p>
+<h1>Convert main.js → Bookmarklet</h1>
 
-<a id="dragLink" class="bookmarklet">Loading...</a>
+<button onclick="convertMain()">Convert</button>
 
-<textarea id="codeBox" readonly></textarea>
+<textarea id="output" placeholder="Bookmarklet appears here..."></textarea>
 
-<script>
-fetch('./main.js')
-  .then(res => res.text())
-  .then(code => {
-    // Compress whitespace
-    code = code.replace(/\s+/g, ' ');
-
-    // Wrap as bookmarklet
-    const bookmarklet = 'javascript:(function(){' + code + '})()';
-
-    // Set drag button
-    const drag = document.getElementById('dragLink');
-    drag.href = bookmarklet;
-    drag.textContent = "Prodigy Hacks";
-
-    <p><b>Mobile:</b> Favorite this page → Edit bookmark → Paste code below</p>
-    document.getElementById('codeBox').value = bookmarklet;
-  })
-  .catch(() => {
-    document.body.innerHTML += "<p style='color:red;'>Failed to load main.js</p>";
-  });
-</script>
+<script src="convert.js"></script>
 
 </body>
 </html>
