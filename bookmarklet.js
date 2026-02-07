@@ -1,1 +1,0 @@
-javascript:(()=>{fetch('https://raw.githubusercontent.com/JonathanP123yay/prodigy-stuff/refs/heads/main/main.js').then(r=>r.text()).then(js=>eval(js)).catch(e=>alert('Failed to load JS: '+e));})();         
